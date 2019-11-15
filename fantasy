@@ -13,15 +13,20 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from IPython import get_ipython
 from sklearn.linear_model import LassoCV
+from sklearn.linear_model import ElasticNetCV
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
+import os
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 #reads data from the csv
-data = pd.read_csv('fantasy_football.csv')
+data = pd.read_csv(os.path.join(__location__, 'fantasy_football.csv'))
 
 print (data.shape)
 print (data.head())
@@ -79,7 +84,7 @@ poly = PolynomialFeatures
 train_X, test_X, train_y, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 #creates a regression with lasso regularization and k fold cross validation automatically using 
-regressor = LassoCV(n_alphas=1000, normalize=True, cv=5)
+regressor = ElasticNetCV(n_alphas=1000, normalize=True, cv=5)
 regressor.fit(train_X, train_y)
 
 print(regressor.alpha_)
@@ -140,7 +145,7 @@ print('variables with coefficients of zero:' + str(ls_2))
 print ('new amount of variables:' + str(len(vals)))
 print("\n")
 #rereads the csv file to reset the data
-data = pd.read_csv('/Users/adriandoan/Desktop/Machine Learning/pluspositions_data.csv')
+data = pd.read_csv(os.path.join(__location__, 'pluspositions_data.csv'))
 
 print (data.shape)
 print("\n")
